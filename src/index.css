@@ -317,6 +317,25 @@ a {
   transform: translateY(-1px);
 }
 
+/* Sidebar overlay: hidden by default on desktop */
+.sidebar-overlay {
+  display: none;
+}
+
+/* Brand title short version: hidden by default on desktop */
+.brand-title-short {
+  display: none;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+/* Hamburger menu toggle button: hidden by default on desktop */
+.menu-toggle-btn {
+  display: none;
+}
+
 .notification-badge {
   position: absolute;
   top: 6px;
@@ -392,6 +411,7 @@ a {
   color: #cbd5e1;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  flex-shrink: 0;
 }
 
 .sidebar-nav {
@@ -400,6 +420,8 @@ a {
   flex-direction: column;
   gap: 0.35rem;
   flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .nav-item {
@@ -439,6 +461,9 @@ a {
 .sidebar-footer {
   padding: 1rem 0.875rem 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  margin-top: auto;
+  background-color: var(--bg-sidebar);
 }
 
 .logout-btn {
@@ -1547,9 +1572,13 @@ a {
     top: 0;
     bottom: 0;
     left: 0;
+    height: 100vh;
+    height: 100dvh;
     z-index: 200;
     transform: translateX(-100%);
     box-shadow: var(--shadow-xl);
+    display: flex;
+    flex-direction: column;
   }
 
   .app-sidebar.open {
@@ -1558,7 +1587,7 @@ a {
 
   /* Sidebar overlay backdrop */
   .sidebar-overlay {
-    display: block;
+    display: block !important;
     position: fixed;
     inset: 0;
     background: rgba(15, 23, 42, 0.55);
@@ -1847,24 +1876,7 @@ a {
   }
 }
 
-/* ── Sidebar overlay: hidden by default ── */
-.sidebar-overlay {
-  display: none;
-}
 
-/* ── Brand title responsive helpers ── */
-.brand-title-short {
-  display: none;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-}
-
-/* ── Hamburger button: hidden by default (desktop) ── */
-.menu-toggle-btn {
-  display: none !important;
-}
 
 /* ==========================================================================
    PROFESSIONAL EVENT ADMISSION PASS & SCANNABLE QR STYLES
