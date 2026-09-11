@@ -1501,6 +1501,14 @@ a {
    RESPONSIVE DESIGN
    ========================================================================== */
 
+/* ── 1280px — Large tablets / small desktops ── */
+@media (max-width: 1280px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── 1024px — Tablet landscape ── */
 @media (max-width: 1024px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1525,38 +1533,1231 @@ a {
   .admin-tables-grid {
     grid-template-columns: 1fr;
   }
+
+  .content-area {
+    padding: 1.5rem 1.5rem 2.5rem;
+  }
 }
 
+/* ── 768px — Tablet portrait / large mobile ── */
 @media (max-width: 768px) {
+  /* Sidebar: slide-in drawer */
   .app-sidebar {
     position: fixed;
-    top: 72px;
+    top: 0;
     bottom: 0;
     left: 0;
+    z-index: 200;
     transform: translateX(-100%);
+    box-shadow: var(--shadow-xl);
   }
 
   .app-sidebar.open {
     transform: translateX(0);
   }
 
-  .stats-grid {
-    grid-template-columns: 1fr;
+  /* Sidebar overlay backdrop */
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(2px);
+    z-index: 199;
+    animation: fadeIn 0.2s ease-out;
   }
 
+  /* Hamburger button: show on mobile */
+  .menu-toggle-btn {
+    display: flex !important;
+  }
+
+  /* Header layout */
+  .app-header {
+    padding: 0 1rem;
+    gap: 0.5rem;
+  }
+
+  /* Hide long brand title text on mobile, show short version */
+  .brand-title-full {
+    display: none;
+  }
+
+  .brand-title-short {
+    display: block;
+  }
+
+  /* Condense header actions */
+  .header-actions {
+    gap: 0.5rem;
+  }
+
+  /* Hide greeting text — show only avatar */
+  .user-greeting {
+    display: none;
+  }
+
+  .user-profile-chip {
+    padding: 4px;
+    gap: 0;
+  }
+
+  /* Dashboard switcher: show only icons */
+  .dashboard-switcher {
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .switcher-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  .switcher-btn span {
+    display: none;
+  }
+
+  /* Content padding */
+  .content-area {
+    padding: 1rem 1rem 2rem;
+  }
+
+  /* Stats grid: 2-col on tablet */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+  }
+
+  /* Events grid: 1-col */
   .events-cards-grid {
     grid-template-columns: 1fr;
   }
 
-  .app-header {
-    padding: 0 1rem;
+  /* Welcome banner: stack */
+  .welcome-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
   }
 
-  .content-area {
+  .welcome-banner::before {
+    display: none;
+  }
+
+  /* Organizer event card: stack on narrow screens */
+  .organizer-event-card {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .org-event-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Stat card: reduce padding */
+  .stat-card {
+    padding: 1rem 1.125rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  /* Admin grids already collapse at 1024, but tighten gaps */
+  .admin-charts-grid,
+  .admin-tables-grid {
+    gap: 1rem;
+  }
+
+  /* Table: ensure horizontal scroll works */
+  .data-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table {
+    min-width: 540px;
+  }
+
+  /* Modal: full-width with smaller padding */
+  .modal-backdrop {
+    padding: 1rem;
+    align-items: flex-end;
+  }
+
+  .modal-content {
+    max-width: 100%;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .modal-body {
+    max-height: 65vh;
+  }
+
+  /* Dropdown menu: edge-aware on small screens */
+  .dropdown-menu {
+    right: 0;
+    left: auto;
+    width: min(320px, calc(100vw - 2rem));
+  }
+
+  /* Quick actions on organizer: stack */
+  .quick-actions-box {
+    flex-direction: column;
+  }
+
+  /* Section header: allow wrap */
+  .section-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+/* ── 640px — Mobile ── */
+@media (max-width: 640px) {
+  /* Stats: 2-col still works, but reduce gap */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  /* Header brand: tighter */
+  .header-brand {
+    gap: 0.5rem;
+  }
+
+  .brand-logo-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* Admin charts gap */
+  .admin-charts-grid {
+    gap: 0.875rem;
+  }
+
+  /* Chart card: reduce padding */
+  .chart-card {
     padding: 1rem;
   }
 
-  .dashboard-switcher span {
+  /* Table card: reduce padding */
+  .table-card {
+    padding: 1rem;
+  }
+
+  /* Chips wrap tightly */
+  .categories-chips {
+    gap: 0.375rem;
+  }
+
+  /* Stat badge: smaller text */
+  .stat-badge {
+    font-size: 0.7rem;
+  }
+}
+
+/* ── 480px — Small phones ── */
+@media (max-width: 480px) {
+  /* Stats: 1-col on very small screens */
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 0.875rem 1rem;
+  }
+
+  .stat-value {
+    font-size: 1.375rem;
+  }
+
+  .stat-icon-wrapper {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Content area: minimal padding */
+  .content-area {
+    padding: 0.875rem 0.875rem 1.75rem;
+  }
+
+  /* Welcome banner */
+  .welcome-title {
+    font-size: 1.25rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 0.85rem;
+  }
+
+  /* Section title */
+  .section-title {
+    font-size: 1rem;
+  }
+
+  /* Organizer event card: reduce padding */
+  .organizer-event-card {
+    padding: 0.875rem 1rem;
+  }
+
+  /* Form input padding */
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 16px; /* Prevent iOS zoom on focus */
+  }
+
+  /* Modal footer: stack buttons */
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .modal-footer .btn-primary,
+  .modal-footer .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Bar chart: reduce height for small screens */
+  .bar-chart-container {
+    height: 140px;
+  }
+
+  /* Switcher hidden entirely on very small screens if needed */
+  .dashboard-switcher {
     display: none;
   }
+}
+
+/* ── Slide-up animation for bottom sheet modals on mobile ── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Sidebar overlay: hidden by default ── */
+.sidebar-overlay {
+  display: none;
+}
+
+/* ── Brand title responsive helpers ── */
+.brand-title-short {
+  display: none;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+/* ── Hamburger button: hidden by default (desktop) ── */
+.menu-toggle-btn {
+  display: none !important;
+}
+
+/* ==========================================================================
+   PROFESSIONAL EVENT ADMISSION PASS & SCANNABLE QR STYLES
+   ========================================================================== */
+
+.ticket-pass-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.ticket-pass-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.15);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Pass Header */
+.ticket-pass-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 55%, #6366f1 100%);
+  color: #ffffff;
+  padding: 1.5rem 1.5rem 1.25rem;
+  position: relative;
+}
+
+.ticket-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.ticket-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.ticket-sparkle-icon {
+  color: #fbbf24;
+}
+
+.ticket-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+}
+
+.ticket-status-chip.confirmed {
+  background: rgba(16, 185, 129, 0.22);
+  border: 1px solid rgba(110, 231, 183, 0.4);
+  color: #a7f3d0;
+}
+
+.ticket-status-chip.pending {
+  background: rgba(245, 158, 11, 0.22);
+  border: 1px solid rgba(253, 230, 138, 0.4);
+  color: #fde68a;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: pulse-ring 2s infinite ease-in-out;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.ticket-event-name {
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.02em;
+}
+
+.ticket-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.ticket-id-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.ticket-event-id-tag {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  font-family: monospace;
+}
+
+/* Pass Body Details Grid */
+.ticket-pass-body {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-surface);
+}
+
+.ticket-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.25rem;
+}
+
+.ticket-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.detail-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.detail-value.attendee-highlight {
+  color: var(--primary);
+  font-size: 1.05rem;
+}
+
+.detail-subtext {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+}
+
+/* Perforation Zone with Concave Notches */
+.ticket-perforation-zone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  height: 28px;
+  overflow: visible;
+}
+
+.ticket-notch {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-app);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.12);
+  z-index: 2;
+}
+
+.notch-left {
+  left: -12px;
+}
+
+.notch-right {
+  right: -12px;
+}
+
+.ticket-dashed-line {
+  flex: 1;
+  border-bottom: 2px dashed var(--border-subtle);
+  margin: 0 1.25rem;
+}
+
+/* QR Code Section */
+.ticket-pass-qr-section {
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: var(--bg-surface-hover);
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.qr-section-header {
+  margin-bottom: 0.9rem;
+}
+
+.qr-section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.qr-section-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* High-Contrast Scannable Plate */
+.ticket-qr-plate {
+  position: relative;
+  display: inline-block;
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.1), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  margin: 0.25rem auto 0.75rem;
+  line-height: 0;
+}
+
+/* Reticle Scanner Targets */
+.qr-reticle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+
+.reticle-tl {
+  top: 6px;
+  left: 6px;
+  border-top: 2.5px solid #2563eb;
+  border-left: 2.5px solid #2563eb;
+}
+
+.reticle-tr {
+  top: 6px;
+  right: 6px;
+  border-top: 2.5px solid #2563eb;
+  border-right: 2.5px solid #2563eb;
+}
+
+.reticle-bl {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 2.5px solid #2563eb;
+  border-left: 2.5px solid #2563eb;
+}
+
+.reticle-br {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 2.5px solid #2563eb;
+  border-right: 2.5px solid #2563eb;
+}
+
+/* Serial & Barcode Simulation */
+.ticket-serial-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.simulated-barcode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 22px;
+  opacity: 0.75;
+}
+
+.bar-line {
+  height: 100%;
+  background-color: var(--text-primary);
+  border-radius: 1px;
+}
+
+.b-w1 { width: 1.5px; }
+.b-w2 { width: 3px; }
+.b-w3 { width: 4.5px; }
+.b-w4 { width: 6px; }
+
+.ticket-code-display {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--text-primary);
+}
+
+.ticket-auth-stamp {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+/* Payload Inspector */
+.ticket-payload-inspect {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.25rem;
+  font-size: 0.8rem;
+}
+
+.btn-text-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s ease;
+}
+
+.btn-text-toggle:hover {
+  background: var(--primary-light);
+}
+
+.btn-copy-payload {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-surface-hover);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.btn-copy-payload:hover {
+  background: var(--bg-surface);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.ticket-raw-payload-box {
+  background: #0f172a;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  animation: fadeIn 0.2s ease;
+}
+
+.payload-box-header {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+}
+
+.payload-json-view {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  color: #38bdf8;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+/* Actions Row */
+.ticket-actions-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.ticket-close-btn {
+  flex: 1;
+}
+
+.ticket-print-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0 0.85rem;
+}
+
+.ticket-download-btn {
+  flex: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+/* Dark Mode Tweaks */
+body.dark .ticket-pass-card {
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6);
+  border-color: #334155;
+}
+
+body.dark .ticket-notch {
+  background: #0f172a;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+body.dark .ticket-qr-plate {
+  background: #ffffff; /* keep QR plate pure white for contrast and scannability */
+  border-color: #ffffff;
+}
+
+/* Print styles for authentic ticket printing */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .ticket-pass-card,
+  .ticket-pass-card * {
+    visibility: visible;
+  }
+  .ticket-pass-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    box-shadow: none;
+    border: 1px solid #94a3b8;
+  }
+  .ticket-payload-inspect,
+  .ticket-actions-row,
+  .modal-close-btn {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   QR SCANNER MODAL & ADMISSION VERIFIER STYLES
+   ========================================================================== */
+
+.qr-scanner-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.scanner-mode-tabs {
+  display: flex;
+  gap: 0.35rem;
+  background: var(--bg-surface-hover);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.scanner-tab-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.scanner-tab-btn:hover {
+  color: var(--primary);
+}
+
+.scanner-tab-btn.active {
+  background: var(--bg-surface);
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Camera Viewport */
+.camera-scan-viewport-wrapper {
+  background: #090d16;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  min-height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
+}
+
+.camera-feed-container {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  background: #000000;
+  overflow: hidden;
+}
+
+.camera-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Viewfinder Overlay */
+.scanner-viewfinder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 180px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.viewfinder-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: #38bdf8;
+}
+
+.vf-tl {
+  top: 0;
+  left: 0;
+  border-top: 3px solid #38bdf8;
+  border-left: 3px solid #38bdf8;
+  border-top-left-radius: 6px;
+}
+
+.vf-tr {
+  top: 0;
+  right: 0;
+  border-top: 3px solid #38bdf8;
+  border-right: 3px solid #38bdf8;
+  border-top-right-radius: 6px;
+}
+
+.vf-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 3px solid #38bdf8;
+  border-left: 3px solid #38bdf8;
+  border-bottom-left-radius: 6px;
+}
+
+.vf-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 3px solid #38bdf8;
+  border-right: 3px solid #38bdf8;
+  border-bottom-right-radius: 6px;
+}
+
+.scanner-laser-line {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  height: 2.5px;
+  background: linear-gradient(90deg, transparent, #ef4444 30%, #f87171 50%, #ef4444 70%, transparent);
+  box-shadow: 0 0 10px #ef4444, 0 0 4px #f87171;
+  animation: scanLaserAnim 2s infinite ease-in-out;
+}
+
+@keyframes scanLaserAnim {
+  0% { top: 12px; opacity: 0.3; }
+  50% { top: 164px; opacity: 1; }
+  100% { top: 12px; opacity: 0.3; }
+}
+
+.scanner-hint-text {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.775rem;
+  font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+.camera-error-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+/* Upload Dropzone */
+.upload-scan-zone {
+  border: 2px dashed var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: var(--bg-surface-hover);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.upload-scan-zone:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.upload-icon {
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.upload-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.upload-subtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Sample Scan View */
+.sample-scan-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sample-scan-lead {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.sample-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.sample-ticket-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.sample-ticket-btn:hover {
+  border-color: var(--primary);
+  background: var(--bg-surface-hover);
+  transform: translateY(-1px);
+}
+
+.sample-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sample-ticket-icon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.sample-btn-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sample-btn-sub {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+}
+
+/* Manual Verify */
+.manual-verify-box {
+  margin-top: 0.75rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.manual-verify-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.manual-verify-form {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.manual-verify-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 0.825rem;
+  outline: none;
+}
+
+.manual-verify-input:focus {
+  border-color: var(--primary);
+}
+
+.manual-verify-btn {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.825rem;
+  white-space: nowrap;
+}
+
+/* Scan Verified Result Card */
+.scan-verified-card {
+  background: var(--bg-surface);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: 0 12px 30px -6px rgba(16, 185, 129, 0.15);
+  animation: fadeIn 0.25s ease;
+}
+
+.verified-header {
+  text-align: center;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 1rem;
+}
+
+.verified-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.725rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #10b981;
+  margin-bottom: 0.6rem;
+}
+
+.verified-event-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.45rem;
+}
+
+.verified-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.verified-token-code {
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.verified-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.verified-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.v-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.v-val {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.v-val.highlight {
+  color: var(--primary);
+}
+
+.v-val.monospace {
+  font-family: monospace;
+}
+
+.admission-auth-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #065f46;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.775rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+body.dark .admission-auth-banner {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+}
+
+.verified-actions {
+  display: flex;
+  gap: 0.75rem;
 }

@@ -22,6 +22,7 @@ export default function Sidebar({
   currentTab,
   setCurrentTab,
   sidebarOpen,
+  setSidebarOpen,
   onLogout
 }) {
   // Navigation items specific to each role wireframe
@@ -61,6 +62,17 @@ export default function Sidebar({
 
   const navItems = getNavItems();
 
+  const handleNavClick = (id) => {
+    setCurrentTab(id);
+    // Close sidebar on mobile after navigation
+    if (setSidebarOpen) setSidebarOpen(false);
+  };
+
+  const handleLogout = () => {
+    if (setSidebarOpen) setSidebarOpen(false);
+    onLogout();
+  };
+
   return (
     <aside className={`app-sidebar ${sidebarOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
@@ -75,7 +87,7 @@ export default function Sidebar({
             <button
               key={item.id}
               className={`nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setCurrentTab(item.id)}
+              onClick={() => handleNavClick(item.id)}
               aria-current={isActive ? 'page' : undefined}
             >
               <Icon size={18} />
@@ -86,7 +98,7 @@ export default function Sidebar({
       </nav>
 
       <div className="sidebar-footer">
-        <button className="logout-btn" onClick={onLogout} aria-label="Sign out">
+        <button className="logout-btn" onClick={handleLogout} aria-label="Sign out">
           <LogOut size={18} />
           <span>Logout</span>
         </button>

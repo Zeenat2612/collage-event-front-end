@@ -33,10 +33,10 @@ export default function Header({
       {/* Brand & Sidebar Toggle */}
       <div className="header-brand">
         <button
-          className="icon-btn"
-          style={{ display: 'none' }} // Available for mobile hook
+          className="icon-btn menu-toggle-btn"
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-label="Toggle navigation menu"
+          aria-expanded={sidebarOpen}
         >
           ☰
         </button>
@@ -44,10 +44,10 @@ export default function Header({
           <Sparkles size={20} />
         </div>
         <div>
-          <h1 className="brand-title">College Event Management System And Automation</h1>
+          <h1 className="brand-title brand-title-full">College Event Management System And Automation</h1>
+          <h1 className="brand-title brand-title-short">CEMA</h1>
         </div>
       </div>
-
 
 
       {/* Right Controls: Theme toggle, Notifications, Profile */}

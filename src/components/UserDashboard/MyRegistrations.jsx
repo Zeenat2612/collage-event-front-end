@@ -4,16 +4,18 @@ import {
   Calendar,
   MapPin,
   QrCode,
-  Download,
   Trash2,
   CheckCircle,
   Clock,
   Search,
   ExternalLink,
   ShieldCheck,
-  Compass
+  Compass,
+  Download
 } from 'lucide-react';
 import Modal from '../common/Modal';
+import TicketPass from '../common/TicketPass';
+import QRScannerModal from '../common/QRScannerModal';
 
 export default function MyRegistrations({
   userBookings,
@@ -23,6 +25,7 @@ export default function MyRegistrations({
   const [filterStatus, setFilterStatus] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   // Filter registrations
   const filteredBookings = userBookings.filter((item) => {
@@ -117,17 +120,36 @@ export default function MyRegistrations({
             </button>
           </div>
 
-          {/* Search Box */}
-          <div className="search-container" style={{ marginBottom: 0, padding: '0.4rem 0.75rem', width: '280px' }}>
-            <Search className="search-icon" size={16} />
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search by event or ticket code..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ fontSize: '0.85rem' }}
-            />
+          {/* Search Box & QR Scanner */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div className="search-container" style={{ marginBottom: 0, padding: '0.4rem 0.75rem', width: '260px' }}>
+              <Search className="search-icon" size={16} />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search by event or ticket code..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ fontSize: '0.85rem' }}
+              />
+            </div>
+
+            <button
+              type="button"
+              className="btn-primary"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.45rem 0.85rem',
+                fontSize: '0.825rem',
+                whiteSpace: 'nowrap'
+              }}
+              onClick={() => setScannerOpen(true)}
+              title="Open QR Pass Scanner & Gate Verifier"
+            >
+              <QrCode size={15} /> QR Scanner
+            </button>
           </div>
         </div>
       </div>
@@ -295,82 +317,23 @@ export default function MyRegistrations({
         isOpen={!!selectedTicket}
         onClose={() => setSelectedTicket(null)}
         title="Event Admission Pass"
+        maxWidth="500px"
       >
         {selectedTicket && (
-          <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-                color: '#fff',
-                padding: '1.5rem',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: '0 8px 24px rgba(37, 99, 235, 0.25)',
-                marginBottom: '1.25rem'
-              }}
-            >
-              <h4 style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '4px' }}>
-                {selectedTicket.title}
-              </h4>
-              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
-                {selectedTicket.date} &bull; {selectedTicket.venue}
-              </p>
-
-              <div
-                style={{
-                  background: '#ffffff',
-                  padding: '1rem',
-                  borderRadius: 'var(--radius-md)',
-                  display: 'inline-block',
-                  margin: '1.25rem auto 0.75rem'
-                }}
-              >
-                <QrCode size={120} color="#0f172a" />
-              </div>
-
-              <div style={{ fontFamily: 'monospace', letterSpacing: '2px', fontSize: '0.9rem' }}>
-                {selectedTicket.ticketCode}
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0.75rem 1rem',
-                background: 'var(--bg-surface-hover)',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.85rem',
-                marginBottom: '1rem'
-              }}
-            >
-              <span>Attendee: <strong>Zeenat</strong></span>
-              <span className={`status-pill ${selectedTicket.status.toLowerCase()}`}>
-                {selectedTicket.status}
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', gap: '0.75rem' }}>
-              <button
-                className="btn-outline"
-                style={{ flex: 1 }}
-                onClick={() => setSelectedTicket(null)}
-              >
-                Close
-              </button>
-              <button
-                className="btn-primary"
-                style={{ flex: 1 }}
-                onClick={() => {
-                  alert(`Pass downloaded for ${selectedTicket.title}`);
-                  setSelectedTicket(null);
-                }}
-              >
-                <Download size={16} /> Download Pass PDF
-              </button>
-            </div>
-          </div>
+          <TicketPass
+            ticket={selectedTicket}
+            attendeeName="Zeenat"
+            onClose={() => setSelectedTicket(null)}
+          />
         )}
       </Modal>
+
+      {/* QR Scanner / Admission Verifier Modal */}
+      <QRScannerModal
+        isOpen={scannerOpen}
+        onClose={() => setScannerOpen(false)}
+        sampleTickets={userBookings}
+      />
     </div>
   );
 }

@@ -772,22 +772,101 @@
   .login-top-bar {
     padding: 0 16px;
   }
+
   .login-brand-sub {
     display: none;
   }
+
   .login-card-container {
     padding: 24px 20px;
     border-radius: var(--radius-lg);
   }
+
   .role-selector-tabs {
     grid-template-columns: 1fr;
   }
+
   .role-tab-btn {
     flex-direction: row;
     justify-content: flex-start;
     padding: 10px 14px;
   }
+
   .role-tab-text {
     text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-main-wrapper {
+    padding: 24px 12px;
+    align-items: flex-start;
+  }
+
+  .login-card-container {
+    padding: 20px 16px;
+  }
+
+  .login-title {
+    font-size: 1.4rem;
+  }
+
+  /* Prevent iOS zoom on input focus */
+  .form-input {
+    font-size: 16px;
+  }
+
+  /* Hide guest button text, keep icon */
+  .login-guest-btn span {
+    display: none;
+  }
+
+  .login-guest-btn {
+    padding: 8px 10px;
+  }
+
+  .demo-credentials-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .demo-quick-btn span {
+    display: none;
+  }
+
+  .modal-actions-row {
+    flex-direction: column-reverse;
+  }
+
+  .modal-cancel-btn,
+  .modal-send-btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .login-top-bar {
+    padding: 0 12px;
+    height: 60px;
+  }
+
+  .login-brand-heading {
+    font-size: 0.9rem;
+  }
+
+  .login-badge-pill {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+  }
+
+  .quick-role-pills {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .role-pill-btn {
+    justify-content: center;
   }
 }

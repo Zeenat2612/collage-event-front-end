@@ -9,10 +9,10 @@ import {
   Users,
   CheckCircle,
   Sparkles,
-  QrCode,
   Tag
 } from 'lucide-react';
 import Modal from '../common/Modal';
+import TicketPass from '../common/TicketPass';
 
 export default function BrowseEvents({
   events,
@@ -442,83 +442,18 @@ export default function BrowseEvents({
         isOpen={!!newlyIssuedTicket}
         onClose={() => setNewlyIssuedTicket(null)}
         title="Event Admission Pass"
+        maxWidth="500px"
       >
         {newlyIssuedTicket && (
-          <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-                color: '#fff',
-                padding: '1.5rem',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: '0 8px 24px rgba(37, 99, 235, 0.25)',
-                marginBottom: '1.25rem'
-              }}
-            >
-              <h4 style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '4px' }}>
-                {newlyIssuedTicket.title}
-              </h4>
-              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
-                {newlyIssuedTicket.date} &bull; {newlyIssuedTicket.venue}
-              </p>
-
-              <div
-                style={{
-                  background: '#ffffff',
-                  padding: '1rem',
-                  borderRadius: 'var(--radius-md)',
-                  display: 'inline-block',
-                  margin: '1.25rem auto 0.75rem'
-                }}
-              >
-                <QrCode size={120} color="#0f172a" />
-              </div>
-
-              <div style={{ fontFamily: 'monospace', letterSpacing: '2px', fontSize: '0.9rem' }}>
-                {newlyIssuedTicket.ticketCode}
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0.75rem 1rem',
-                background: 'var(--bg-surface-hover)',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.85rem',
-                marginBottom: '1rem'
-              }}
-            >
-              <span>Attendee: <strong>Zeenat</strong></span>
-              <span className={`status-pill ${newlyIssuedTicket.status.toLowerCase()}`}>
-                {newlyIssuedTicket.status}
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', gap: '0.75rem' }}>
-              <button
-                className="btn-outline"
-                style={{ flex: 1 }}
-                onClick={() => {
-                  setNewlyIssuedTicket(null);
-                  if (onNavigateTab) onNavigateTab('my-registrations');
-                }}
-              >
-                Go to My Registrations
-              </button>
-              <button
-                className="btn-primary"
-                style={{ flex: 1 }}
-                onClick={() => {
-                  alert(`Pass downloaded for ${newlyIssuedTicket.title}`);
-                  setNewlyIssuedTicket(null);
-                }}
-              >
-                Download Pass PDF
-              </button>
-            </div>
-          </div>
+          <TicketPass
+            ticket={newlyIssuedTicket}
+            attendeeName="Zeenat"
+            onClose={() => {
+              setNewlyIssuedTicket(null);
+              if (onNavigateTab) onNavigateTab('my-registrations');
+            }}
+            closeLabel="Go to My Registrations"
+          />
         )}
       </Modal>
     </div>

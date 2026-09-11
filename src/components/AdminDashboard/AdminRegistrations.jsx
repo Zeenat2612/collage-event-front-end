@@ -11,6 +11,7 @@ import {
   Trash2
 } from 'lucide-react';
 import Modal from '../common/Modal';
+import TicketPass from '../common/TicketPass';
 
 export default function AdminRegistrations({
   registrationsList = [
@@ -248,80 +249,15 @@ export default function AdminRegistrations({
         isOpen={!!selectedTicket}
         onClose={() => setSelectedTicket(null)}
         title="Admin Digital Pass Inspection"
+        maxWidth="500px"
       >
         {selectedTicket && (
-          <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-                color: '#fff',
-                padding: '1.5rem',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: '0 8px 24px rgba(37, 99, 235, 0.25)',
-                marginBottom: '1.25rem'
-              }}
-            >
-              <h4 style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '4px' }}>
-                {selectedTicket.eventTitle}
-              </h4>
-              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
-                {selectedTicket.date} &bull; {selectedTicket.venue}
-              </p>
-
-              <div
-                style={{
-                  background: '#ffffff',
-                  padding: '1rem',
-                  borderRadius: 'var(--radius-md)',
-                  display: 'inline-block',
-                  margin: '1.25rem auto 0.75rem'
-                }}
-              >
-                <QrCode size={120} color="#0f172a" />
-              </div>
-
-              <div style={{ fontFamily: 'monospace', letterSpacing: '2px', fontSize: '0.9rem' }}>
-                {selectedTicket.ticketCode}
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0.75rem 1rem',
-                background: 'var(--bg-surface-hover)',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.85rem',
-                marginBottom: '1rem'
-              }}
-            >
-              <span>Attendee: <strong>{selectedTicket.attendee}</strong></span>
-              <span className={`status-pill ${selectedTicket.status.toLowerCase()}`}>
-                {selectedTicket.status}
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', gap: '0.75rem' }}>
-              <button
-                className="btn-outline"
-                style={{ flex: 1 }}
-                onClick={() => setSelectedTicket(null)}
-              >
-                Close
-              </button>
-              <button
-                className="btn-primary"
-                style={{ flex: 1 }}
-                onClick={() => {
-                  alert(`Re-issuing pass to ${selectedTicket.attendee}'s email.`);
-                  setSelectedTicket(null);
-                }}
-              >
-                Re-Send Pass Email
-              </button>
-            </div>
-          </div>
+          <TicketPass
+            ticket={selectedTicket}
+            attendeeName={selectedTicket.attendee}
+            onClose={() => setSelectedTicket(null)}
+            isAdmin
+          />
         )}
       </Modal>
     </div>
