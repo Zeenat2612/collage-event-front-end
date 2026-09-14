@@ -165,6 +165,7 @@ export default function App() {
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
         sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
         onLogout={handleLogout}
       />
 

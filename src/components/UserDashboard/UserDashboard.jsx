@@ -14,6 +14,8 @@ import {
   Users
 } from 'lucide-react';
 import Modal from '../common/Modal';
+import EventDetailsModal from './EventDetailsModal';
+import { isEventRegistered } from '../../services/registrationService';
 
 export default function UserDashboard({
   events,
@@ -45,43 +47,28 @@ export default function UserDashboard({
 
   // Filter events by search term and category
   const filteredEvents = events.filter(evt => {
+    const term = searchTerm.toLowerCase();
     const matchesSearch =
-      evt.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      evt.venue.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      evt.category.toLowerCase().includes(searchTerm.toLowerCase());
+      evt.title.toLowerCase().includes(term) ||
+      (evt.venue && evt.venue.toLowerCase().includes(term)) ||
+      evt.category.toLowerCase().includes(term) ||
+      (evt.college && evt.college.toLowerCase().includes(term)) ||
+      (evt.description && evt.description.toLowerCase().includes(term));
     const matchesCat =
       selectedCategory === 'All' || evt.category.toLowerCase() === selectedCategory.toLowerCase();
     return matchesSearch && matchesCat;
   });
-
-  const handleBookTicket = (event) => {
-    const alreadyRegistered = userBookings.some(b => b.title === event.title);
-    if (alreadyRegistered) {
-      alert(`You are already registered for ${event.title}!`);
-      return;
-    }
-    const newReg = {
-      id: `reg-${Date.now()}`,
-      eventId: event.id,
-      title: event.title,
-      date: event.date,
-      status: 'Confirmed',
-      ticketCode: `TCK-${Math.floor(100000 + Math.random() * 900000)}`,
-      venue: event.venue,
-      seat: 'General Admission - Assigned at Entry'
-    };
-    setUserBookings([newReg, ...userBookings]);
-    setSelectedEvent(null);
-    setSelectedTicket(newReg);
-  };
 
   return (
     <div className="user-dashboard-view">
       {/* Welcome Banner */}
       <section className="welcome-banner">
         <div>
+          <div className="welcome-pill">AIKTC CAMPUS PORTAL</div>
           <h2 className="welcome-title">Welcome, {userName}!</h2>
-          <p className="welcome-subtitle">Discover and be a part of amazing events.</p>
+          <p className="welcome-subtitle">
+            Discover upcoming hackathons, workshops, and campus activities at Anjuman-I-Islam Kalsekar Technical Campus.
+          </p>
         </div>
       </section>
 
@@ -172,17 +159,31 @@ export default function UserDashboard({
                     <div className="event-meta">
                       <div className="meta-row">
                         <Calendar size={14} color="var(--text-muted)" />
-                        <span>{event.date}</span>
+                        <span>{event.date}{event.time ? ` • ${event.time}` : ''}</span>
                       </div>
-                      <div className="meta-row">
-                        <MapPin size={14} color="var(--text-muted)" />
-                        <span>{event.venue}</span>
-                      </div>
+                      {event.venue && (
+                        <div className="meta-row">
+                          <MapPin size={14} color="var(--text-muted)" />
+                          <span>{event.venue}</span>
+                        </div>
+                      )}
                     </div>
 
-                    <span className={`badge ${event.categoryColor}`}>
-                      {event.category}
-                    </span>
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '0.75rem' }}>
+                      <span className={`badge ${event.categoryColor || 'blue'}`} style={{ marginBottom: 0 }}>
+                        {event.category}
+                      </span>
+                      {event.college && (
+                        <span className="badge gray" style={{ marginBottom: 0, fontSize: '0.675rem' }}>
+                          {event.college.length > 20 ? 'AIKTC' : event.college}
+                        </span>
+                      )}
+                      {isEventRegistered(event.id, userBookings) && (
+                        <span className="badge emerald" style={{ marginBottom: 0, fontSize: '0.675rem' }}>
+                          Registered
+                        </span>
+                      )}
+                    </div>
 
                     <button
                       className="btn-card"
@@ -284,74 +285,16 @@ export default function UserDashboard({
         </div>
       </div>
 
-      {/* Modal: Event Details & Registration */}
-      <Modal
+      {/* Professional Event Details & Registration Flow Modal */}
+      <EventDetailsModal
         isOpen={!!selectedEvent}
         onClose={() => setSelectedEvent(null)}
-        title={selectedEvent?.title || 'Event Details'}
-      >
-        {selectedEvent && (
-          <div>
-            <img
-              src={selectedEvent.image}
-              alt={selectedEvent.title}
-              style={{
-                width: '100%',
-                height: 180,
-                objectFit: 'cover',
-                borderRadius: 'var(--radius-md)',
-                marginBottom: '1rem'
-              }}
-            />
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '1rem' }}>
-              <span className={`badge ${selectedEvent.categoryColor}`}>
-                {selectedEvent.category}
-              </span>
-              <span className="badge gray">
-                <Users size={12} style={{ marginRight: 4 }} />
-                {selectedEvent.registered} / {selectedEvent.capacity} spots filled
-              </span>
-            </div>
-
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '1.25rem', lineHeight: 1.6 }}>
-              {selectedEvent.description}
-            </p>
-
-            <div
-              style={{
-                background: 'var(--bg-surface-hover)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1rem',
-                border: '1px solid var(--border-subtle)',
-                marginBottom: '1.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem',
-                fontSize: '0.85rem'
-              }}
-            >
-              <div><strong>Speaker / Host:</strong> {selectedEvent.speaker}</div>
-              <div><strong>Date & Time:</strong> {selectedEvent.date} ({selectedEvent.time})</div>
-              <div><strong>Venue:</strong> {selectedEvent.venue}</div>
-            </div>
-
-            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-              <button
-                className="btn-outline"
-                onClick={() => setSelectedEvent(null)}
-              >
-                Close
-              </button>
-              <button
-                className="btn-primary"
-                onClick={() => handleBookTicket(selectedEvent)}
-              >
-                <CheckCircle size={16} /> Register Now
-              </button>
-            </div>
-          </div>
-        )}
-      </Modal>
+        event={selectedEvent}
+        userBookings={userBookings}
+        setUserBookings={setUserBookings}
+        onNavigateTab={onNavigateTab}
+        userName={userName}
+      />
 
       {/* Modal: Ticket Pass / QR Verification */}
       <Modal

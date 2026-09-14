@@ -33,18 +33,24 @@ export default function Header({
       {/* Brand & Sidebar Toggle */}
       <div className="header-brand">
         <button
-          className="icon-btn"
-          style={{ display: 'none' }} // Available for mobile hook
+          className="icon-btn hamburger-btn"
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-label="Toggle navigation menu"
+          title="Toggle Menu"
         >
           ☰
         </button>
         <div className="brand-logo-icon">
           <Sparkles size={20} />
         </div>
-        <div>
-          <h1 className="brand-title">College Event Management System And Automation</h1>
+        <div className="brand-title-group">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h1 className="brand-title">AIKTC Events</h1>
+            <span className="brand-tag">AIKTC</span>
+          </div>
+          <span className="brand-subtitle">
+            Smart Event Management System
+          </span>
         </div>
       </div>
 

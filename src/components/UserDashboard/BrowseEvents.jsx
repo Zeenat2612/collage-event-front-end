@@ -13,6 +13,8 @@ import {
   Tag
 } from 'lucide-react';
 import Modal from '../common/Modal';
+import EventDetailsModal from './EventDetailsModal';
+import { isEventRegistered } from '../../services/registrationService';
 
 export default function BrowseEvents({
   events,
@@ -31,11 +33,13 @@ export default function BrowseEvents({
 
   // Filter events
   const filteredEvents = events.filter(evt => {
+    const term = searchTerm.toLowerCase();
     const matchesSearch =
-      evt.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      evt.venue.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      evt.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (evt.description && evt.description.toLowerCase().includes(searchTerm.toLowerCase()));
+      evt.title.toLowerCase().includes(term) ||
+      (evt.venue && evt.venue.toLowerCase().includes(term)) ||
+      evt.category.toLowerCase().includes(term) ||
+      (evt.college && evt.college.toLowerCase().includes(term)) ||
+      (evt.description && evt.description.toLowerCase().includes(term));
 
     const matchesCat =
       selectedCategory === 'All' || evt.category.toLowerCase() === selectedCategory.toLowerCase();
@@ -57,37 +61,15 @@ export default function BrowseEvents({
     return 0;
   });
 
-  const handleBookTicket = (event) => {
-    const alreadyRegistered = userBookings.some(b => b.title === event.title || b.eventId === event.id);
-    if (alreadyRegistered) {
-      alert(`You are already registered for ${event.title}! Check "My Registrations" for your pass.`);
-      return;
-    }
-
-    const newReg = {
-      id: `reg-${Date.now()}`,
-      eventId: event.id,
-      title: event.title,
-      date: event.date,
-      status: 'Confirmed',
-      ticketCode: `TCK-${Math.floor(100000 + Math.random() * 900000)}`,
-      venue: event.venue,
-      seat: 'General Admission - Assigned at Entry'
-    };
-
-    setUserBookings([newReg, ...userBookings]);
-    setSelectedEvent(null);
-    setNewlyIssuedTicket(newReg);
-  };
-
   return (
     <div className="user-dashboard-view">
       {/* Banner */}
       <section className="welcome-banner">
         <div>
-          <h2 className="welcome-title">Browse College Events</h2>
+          <div className="welcome-pill">CAMPUS EVENTS DIRECTORY</div>
+          <h2 className="welcome-title">Browse AIKTC Events</h2>
           <p className="welcome-subtitle">
-            Discover hackathons, cultural festivals, guest lectures, and sports tournaments across campus.
+            Discover hackathons, technical workshops, and campus opportunities across Anjuman-I-Islam Kalsekar Technical Campus.
           </p>
         </div>
       </section>
@@ -290,9 +272,16 @@ export default function BrowseEvents({
 
                 <div className="event-card-body">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                    <span className={`badge ${event.categoryColor || 'blue'}`} style={{ marginBottom: 0 }}>
-                      {event.category}
-                    </span>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                      <span className={`badge ${event.categoryColor || 'blue'}`} style={{ marginBottom: 0 }}>
+                        {event.category}
+                      </span>
+                      {event.college && (
+                        <span className="badge gray" style={{ marginBottom: 0, fontSize: '0.675rem' }}>
+                          {event.college.length > 20 ? 'AIKTC' : event.college}
+                        </span>
+                      )}
+                    </div>
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
                       {event.status || 'Upcoming'}
                     </span>
@@ -305,10 +294,12 @@ export default function BrowseEvents({
                       <Calendar size={14} color="var(--text-muted)" />
                       <span>{event.date} {event.time ? `• ${event.time}` : ''}</span>
                     </div>
-                    <div className="meta-row">
-                      <MapPin size={14} color="var(--text-muted)" />
-                      <span>{event.venue}</span>
-                    </div>
+                    {event.venue && (
+                      <div className="meta-row">
+                        <MapPin size={14} color="var(--text-muted)" />
+                        <span>{event.venue}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Attendance capacity progress bar */}
@@ -401,9 +392,22 @@ export default function BrowseEvents({
                 fontSize: '0.85rem'
               }}
             >
-              <div><strong>Speaker / Host:</strong> {selectedEvent.speaker || 'College Committee'}</div>
-              <div><strong>Date & Time:</strong> {selectedEvent.date} {selectedEvent.time ? `(${selectedEvent.time})` : ''}</div>
-              <div><strong>Venue:</strong> {selectedEvent.venue}</div>
+              <div><strong>Date:</strong> {selectedEvent.date}{selectedEvent.time ? ` (${selectedEvent.time})` : ''}</div>
+              {selectedEvent.venue && (
+                <div><strong>Venue:</strong> {selectedEvent.venue}</div>
+              )}
+              {selectedEvent.college && (
+                <div><strong>College / Campus:</strong> {selectedEvent.college}</div>
+              )}
+              {selectedEvent.department && (
+                <div><strong>Department:</strong> {selectedEvent.department}</div>
+              )}
+              {selectedEvent.audience && (
+                <div><strong>Target Audience:</strong> {selectedEvent.audience}</div>
+              )}
+              {selectedEvent.speaker && (
+                <div><strong>Speaker / Host:</strong> {selectedEvent.speaker}</div>
+              )}
             </div>
 
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>

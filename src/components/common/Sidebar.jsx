@@ -14,7 +14,8 @@ import {
   BarChart3,
   Sliders,
   ShieldAlert,
-  ClipboardList
+  ClipboardList,
+  GraduationCap
 } from 'lucide-react';
 
 export default function Sidebar({
@@ -22,6 +23,7 @@ export default function Sidebar({
   currentTab,
   setCurrentTab,
   sidebarOpen,
+  setSidebarOpen,
   onLogout
 }) {
   // Navigation items specific to each role wireframe
@@ -61,36 +63,68 @@ export default function Sidebar({
 
   const navItems = getNavItems();
 
+  const getRoleLabel = () => {
+    switch (activeRole) {
+      case 'organizer':
+        return 'Organizer Portal';
+      case 'admin':
+        return 'Admin Console';
+      case 'user':
+      default:
+        return 'Student Portal';
+    }
+  };
+
   return (
-    <aside className={`app-sidebar ${sidebarOpen ? 'open' : ''}`}>
-      <div className="sidebar-header">
-        <span>{activeRole} Portal</span>
-      </div>
+    <>
+      {/* Mobile overlay backdrop */}
+      <div
+        className={`sidebar-overlay ${sidebarOpen ? 'active' : ''}`}
+        onClick={() => setSidebarOpen && setSidebarOpen(false)}
+        aria-hidden="true"
+      />
 
-      <nav className="sidebar-nav" aria-label="Role Navigation">
-        {navItems.map(item => {
-          const Icon = item.icon;
-          const isActive = currentTab === item.id;
-          return (
-            <button
-              key={item.id}
-              className={`nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setCurrentTab(item.id)}
-              aria-current={isActive ? 'page' : undefined}
-            >
-              <Icon size={18} />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
-      </nav>
+      <aside className={`app-sidebar role-${activeRole} ${sidebarOpen ? 'open' : ''}`}>
+        <div className="sidebar-header">
+          <div className="sidebar-brand-badge">
+            <div className="sidebar-brand-icon-wrap">
+              <GraduationCap size={20} />
+            </div>
+            <div className="sidebar-brand-info">
+              <span className="sidebar-institution">AIKTC CAMPUS</span>
+              <span className="sidebar-role-label">{getRoleLabel()}</span>
+            </div>
+          </div>
+        </div>
 
-      <div className="sidebar-footer">
-        <button className="logout-btn" onClick={onLogout} aria-label="Sign out">
-          <LogOut size={18} />
-          <span>Logout</span>
-        </button>
-      </div>
-    </aside>
+        <nav className="sidebar-nav" aria-label="Role Navigation">
+          {navItems.map(item => {
+            const Icon = item.icon;
+            const isActive = currentTab === item.id;
+            return (
+              <button
+                key={item.id}
+                className={`nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => {
+                  setCurrentTab(item.id);
+                  if (setSidebarOpen) setSidebarOpen(false);
+                }}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <Icon size={18} />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="sidebar-footer">
+          <button className="logout-btn" onClick={onLogout} aria-label="Sign out">
+            <LogOut size={18} />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }

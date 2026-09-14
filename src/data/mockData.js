@@ -1,79 +1,74 @@
 // Mock data for College Event Management System And Automation
+// Events updated to reflect real AIKTC college events.
 
 export const upcomingEventsData = [
   {
     id: "evt-1",
-    title: "Tech Talk 2025",
-    date: "10 Jun 2025",
-    time: "10:00 AM - 01:00 PM",
-    venue: "Main Auditorium",
+    title: "Internal SIH Hackathon 2026",
+    date: "5 Sep 2026",
+    time: null,
+    venue: null,
     category: "Technical",
     categoryColor: "blue",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80",
-    description: "Explore the frontiers of Artificial Intelligence, Quantum Computing, and Next-Gen Software Engineering with top industry thought leaders.",
-    speaker: "Dr. Arvind Rao, Principal AI Scientist",
-    capacity: 300,
-    registered: 245,
-    status: "Ongoing"
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
+    description: "Internal Smart India Hackathon 2026 — an internal hackathon competition at Anjuman-I-Islam Kalsekar Technical Campus (AIKTC) for students to innovate and solve real-world problems.",
+    speaker: null,
+    audience: null,
+    college: "Anjuman-I-Islam Kalsekar Technical Campus (AIKTC)",
+    capacity: null,
+    registered: null,
+    status: "Upcoming"
   },
   {
     id: "evt-2",
-    title: "Cultural Fest",
-    date: "15 Jun 2025",
-    time: "04:30 PM - 10:00 PM",
-    venue: "College Ground",
-    category: "Cultural",
-    categoryColor: "rose",
-    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
-    description: "An electrifying celebration of music, dance, theater, and artistic expression featuring inter-collegiate band performances.",
-    speaker: "College Cultural Committee",
-    capacity: 1200,
-    registered: 980,
-    status: "Draft"
+    title: "DevOps Hands-on Workshop",
+    date: "13 Aug 2026",
+    time: null,
+    venue: null,
+    category: "Workshop",
+    categoryColor: "emerald",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+    description: "A practical, hands-on DevOps workshop at AIKTC covering core DevOps practices, tools, and pipelines for modern software development and deployment.",
+    speaker: null,
+    audience: null,
+    college: "Anjuman-I-Islam Kalsekar Technical Campus (AIKTC)",
+    capacity: null,
+    registered: null,
+    status: "Upcoming"
   },
   {
     id: "evt-3",
-    title: "AI Workshop",
-    date: "20 Jun 2025",
-    time: "09:30 AM - 04:00 PM",
-    venue: "Seminar Hall",
-    category: "Workshop",
-    categoryColor: "emerald",
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
-    description: "Hands-on masterclass building production-ready LLM agents, RAG architectures, and fine-tuning open-source models.",
-    speaker: "Prof. Neha Verma, AI Lab Director",
-    capacity: 80,
-    registered: 76,
+    title: "Hacktoon 1.0",
+    date: "28 Mar 2026",
+    time: "8:00 AM",
+    venue: "College Auditorium",
+    category: "Technical",
+    categoryColor: "blue",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+    description: "Hacktoon 1.0 is a technical competition event at AIKTC's College Auditorium, bringing together students to compete in a creative and challenging hackathon format.",
+    speaker: null,
+    audience: "Students",
+    college: "Anjuman-I-Islam Kalsekar Technical Campus (AIKTC)",
+    capacity: null,
+    registered: null,
     status: "Upcoming"
   },
   {
     id: "evt-4",
-    title: "Sports Meet",
-    date: "25 Jun 2025",
-    time: "07:30 AM - 05:00 PM",
-    venue: "Sports Complex",
-    category: "Sports",
+    title: "Startup Boot Camp 2026",
+    date: "18 Jul 2026",
+    time: "10:00 AM",
+    venue: null,
+    category: "Workshop",
     categoryColor: "amber",
-    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80",
-    description: "Annual intra-university track and field championships, football tournament, and badminton singles.",
-    speaker: "Sports Council",
-    capacity: 500,
-    registered: 410,
-    status: "Ongoing"
-  },
-  {
-    id: "evt-5",
-    title: "Literary Symposium",
-    date: "28 Jun 2025",
-    time: "11:00 AM - 03:00 PM",
-    venue: "Auditorium B",
-    category: "Literary",
-    categoryColor: "purple",
-    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80",
-    description: "Debate championship, poetry slam, and author interaction on contemporary literature and creative writing.",
-    speaker: "Literary Circle",
-    capacity: 150,
-    registered: 110,
+    image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80",
+    description: "Startup Boot Camp 2026 is an awareness and workshop event at AIKTC aimed at students from the BPHARM department, focused on entrepreneurship and startup fundamentals.",
+    speaker: null,
+    audience: "Students",
+    department: "BPHARM",
+    college: "Anjuman-I-Islam Kalsekar Technical Campus (AIKTC)",
+    capacity: null,
+    registered: null,
     status: "Upcoming"
   }
 ];
@@ -81,42 +76,29 @@ export const upcomingEventsData = [
 export const userRegistrationsData = [
   {
     id: "reg-1",
-    eventId: "evt-1",
-    title: "Tech Talk 2025",
-    date: "10 Jun 2025",
+    eventId: "evt-3",
+    title: "Hacktoon 1.0",
+    date: "28 Mar 2026",
     status: "Confirmed",
     ticketCode: "TCK-892401",
-    venue: "Main Auditorium",
-    seat: "Row C - Seat 14"
+    venue: "College Auditorium",
+    seat: null
   },
   {
     id: "reg-2",
-    eventId: "evt-3",
-    title: "AI Workshop",
-    date: "20 Jun 2025",
-    status: "Pending",
-    ticketCode: "TCK-441029",
-    venue: "Seminar Hall",
-    seat: "Waitlist #3"
-  },
-  {
-    id: "reg-3",
     eventId: "evt-4",
-    title: "Sports Meet",
-    date: "25 Jun 2025",
+    title: "Startup Boot Camp 2026",
+    date: "18 Jul 2026",
     status: "Confirmed",
-    ticketCode: "TCK-673199",
-    venue: "Sports Complex",
-    seat: "Track 4 - Bib #108"
+    ticketCode: "TCK-441029",
+    venue: null,
+    seat: null
   }
 ];
 
 export const categoriesList = [
   "Technical",
-  "Cultural",
   "Workshop",
-  "Sports",
-  "Literary",
   "Others"
 ];
 
@@ -124,33 +106,33 @@ export const organizerStats = [
   {
     id: "stat-events",
     title: "Total Events",
-    value: 5,
+    value: 4,
     icon: "Calendar",
-    change: "+2 this month",
+    change: "4 AIKTC events",
     theme: "blue"
   },
   {
     id: "stat-reg",
     title: "Total Registrations",
-    value: 320,
+    value: 0,
     icon: "Users",
-    change: "+18% from last week",
+    change: "Registrations open soon",
     theme: "green"
   },
   {
     id: "stat-ongoing",
     title: "Ongoing Events",
-    value: 3,
+    value: 0,
     icon: "CheckCircle2",
-    change: "Active right now",
+    change: "None currently active",
     theme: "amber"
   },
   {
     id: "stat-upcoming",
     title: "Upcoming Events",
-    value: 2,
+    value: 4,
     icon: "Clock",
-    change: "Next in 5 days",
+    change: "All 4 events upcoming",
     theme: "purple"
   }
 ];
@@ -158,30 +140,39 @@ export const organizerStats = [
 export const organizerEventsList = [
   {
     id: "org-1",
-    title: "Tech Talk 2025",
-    dateVenue: "10 Jun 2025 | Main Auditorium",
-    status: "Ongoing",
-    registrations: 180,
-    maxCapacity: 200,
+    title: "Internal SIH Hackathon 2026",
+    dateVenue: "5 Sep 2026 | AIKTC",
+    status: "Upcoming",
+    registrations: 0,
+    maxCapacity: null,
     category: "Technical"
   },
   {
     id: "org-2",
-    title: "AI Workshop",
-    dateVenue: "20 Jun 2025 | Seminar Hall",
+    title: "DevOps Hands-on Workshop",
+    dateVenue: "13 Aug 2026 | AIKTC",
     status: "Upcoming",
-    registrations: 72,
-    maxCapacity: 80,
+    registrations: 0,
+    maxCapacity: null,
     category: "Workshop"
   },
   {
     id: "org-3",
-    title: "Cultural Fest",
-    dateVenue: "15 Jun 2025 | College Ground",
-    status: "Draft",
+    title: "Hacktoon 1.0",
+    dateVenue: "28 Mar 2026 | College Auditorium",
+    status: "Upcoming",
     registrations: 0,
-    maxCapacity: 1000,
-    category: "Cultural"
+    maxCapacity: null,
+    category: "Technical"
+  },
+  {
+    id: "org-4",
+    title: "Startup Boot Camp 2026",
+    dateVenue: "18 Jul 2026 | AIKTC",
+    status: "Upcoming",
+    registrations: 0,
+    maxCapacity: null,
+    category: "Workshop"
   }
 ];
 
@@ -255,31 +246,31 @@ export const recentUsersData = [
 ];
 
 export const recentEventsData = [
-  { id: 1, eventName: "Tech Talk 2025", organizer: "CS Department", date: "10 Jun 2025", status: "Upcoming" },
-  { id: 2, eventName: "Cultural Fest", organizer: "Arts Club", date: "15 Jun 2025", status: "Upcoming" },
-  { id: 3, eventName: "AI Workshop", organizer: "Tech Society", date: "20 Jun 2025", status: "Completed" },
-  { id: 4, eventName: "Sports Meet", organizer: "Sports Club", date: "25 Jun 2025", status: "Ongoing" }
+  { id: 1, eventName: "Internal SIH Hackathon 2026", organizer: "AIKTC", date: "5 Sep 2026", status: "Upcoming" },
+  { id: 2, eventName: "DevOps Hands-on Workshop", organizer: "AIKTC", date: "13 Aug 2026", status: "Upcoming" },
+  { id: 3, eventName: "Hacktoon 1.0", organizer: "AIKTC", date: "28 Mar 2026", status: "Upcoming" },
+  { id: 4, eventName: "Startup Boot Camp 2026", organizer: "AIKTC", date: "18 Jul 2026", status: "Upcoming" }
 ];
 
 export const notificationsList = [
   {
     id: "notif-1",
     title: "Registration Confirmed",
-    message: "Your seat for Tech Talk 2025 has been confirmed.",
+    message: "Your registration for Hacktoon 1.0 at College Auditorium has been confirmed.",
     time: "10m ago",
     unread: true
   },
   {
     id: "notif-2",
     title: "Event Reminder",
-    message: "AI Workshop starts in 2 days at Seminar Hall.",
+    message: "Startup Boot Camp 2026 starts on 18 Jul 2026 at 10:00 AM.",
     time: "2h ago",
     unread: true
   },
   {
     id: "notif-3",
     title: "New Event Published",
-    message: "Cultural Fest 2025 schedule has been updated.",
+    message: "DevOps Hands-on Workshop has been published for 13 Aug 2026 at AIKTC.",
     time: "1d ago",
     unread: false
   }
