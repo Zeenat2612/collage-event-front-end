@@ -179,11 +179,7 @@ export default function LoginPage({
             <Sparkles size={20} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <h1 className="login-brand-heading">AIKTC Event Portal</h1>
-              <span className="brand-tag">AIKTC</span>
-            </div>
-            <p className="login-brand-sub">Anjuman-I-Islam Kalsekar Technical Campus</p>
+            <h1 className="login-brand-heading">College Event Management System</h1>
           </div>
         </div>
 

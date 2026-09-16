@@ -159,6 +159,15 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {/* Mobile sidebar overlay backdrop */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Dynamic Role Sidebar */}
       <Sidebar
         activeRole={activeRole}

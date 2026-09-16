@@ -44,16 +44,9 @@ export default function Header({
           <Sparkles size={20} />
         </div>
         <div className="brand-title-group">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h1 className="brand-title">AIKTC Events</h1>
-            <span className="brand-tag">AIKTC</span>
-          </div>
-          <span className="brand-subtitle">
-            Smart Event Management System
-          </span>
+          <h1 className="brand-title">College Event Management System</h1>
         </div>
       </div>
-
 
 
       {/* Right Controls: Theme toggle, Notifications, Profile */}

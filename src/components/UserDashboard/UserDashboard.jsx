@@ -3,19 +3,19 @@ import {
   Search,
   Calendar,
   MapPin,
-  Clock,
   ArrowRight,
   Quote,
   Ticket,
   CheckCircle,
-  Clock3,
   Bookmark,
-  QrCode,
-  Users
+  Users,
+  QrCode
 } from 'lucide-react';
 import Modal from '../common/Modal';
 import EventDetailsModal from './EventDetailsModal';
 import { isEventRegistered } from '../../services/registrationService';
+import TicketPass from '../common/TicketPass';
+import QRScannerModal from '../common/QRScannerModal';
 
 export default function UserDashboard({
   events,
@@ -33,6 +33,7 @@ export default function UserDashboard({
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [scannerOpen, setScannerOpen] = useState(false);
   const [localBookings, setLocalBookings] = useState(registrations || []);
   const [localBookmarks, setLocalBookmarks] = useState(['evt-1']);
 
@@ -70,6 +71,24 @@ export default function UserDashboard({
             Discover upcoming hackathons, workshops, and campus activities at Anjuman-I-Islam Kalsekar Technical Campus.
           </p>
         </div>
+        <div>
+          <button
+            type="button"
+            className="btn-primary"
+            style={{
+              background: '#ffffff',
+              color: 'var(--primary)',
+              fontWeight: 700,
+              boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem'
+            }}
+            onClick={() => setScannerOpen(true)}
+          >
+            <QrCode size={18} /> QR Scanner
+          </button>
+        </div>
       </section>
 
       {/* Main Grid: Left 2/3, Right 1/3 */}
@@ -86,7 +105,7 @@ export default function UserDashboard({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className="btn-primary" onClick={() => {}}>
+            <button className="btn-primary" onClick={() => { }}>
               Search
             </button>
           </div>
@@ -301,73 +320,23 @@ export default function UserDashboard({
         isOpen={!!selectedTicket}
         onClose={() => setSelectedTicket(null)}
         title="Event Admission Pass"
+        maxWidth="500px"
       >
         {selectedTicket && (
-          <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-                color: '#fff',
-                padding: '1.5rem',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: '0 8px 24px rgba(37, 99, 235, 0.25)',
-                marginBottom: '1.25rem'
-              }}
-            >
-              <h4 style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '4px' }}>
-                {selectedTicket.title}
-              </h4>
-              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
-                {selectedTicket.date} &bull; {selectedTicket.venue}
-              </p>
-
-              <div
-                style={{
-                  background: '#ffffff',
-                  padding: '1rem',
-                  borderRadius: 'var(--radius-md)',
-                  display: 'inline-block',
-                  margin: '1.25rem auto 0.75rem'
-                }}
-              >
-                <QrCode size={120} color="#0f172a" />
-              </div>
-
-              <div style={{ fontFamily: 'monospace', letterSpacing: '2px', fontSize: '0.9rem' }}>
-                {selectedTicket.ticketCode}
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0.75rem 1rem',
-                background: 'var(--bg-surface-hover)',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.85rem',
-                marginBottom: '1rem'
-              }}
-            >
-              <span>Attendee: <strong>{userName}</strong></span>
-              <span className={`status-pill ${selectedTicket.status.toLowerCase()}`}>
-                {selectedTicket.status}
-              </span>
-            </div>
-
-            <button
-              className="btn-primary"
-              style={{ width: '100%' }}
-              onClick={() => {
-                alert(`Pass downloaded for ${selectedTicket.title}`);
-                setSelectedTicket(null);
-              }}
-            >
-              Download Pass PDF
-            </button>
-          </div>
+          <TicketPass
+            ticket={selectedTicket}
+            attendeeName={userName}
+            onClose={() => setSelectedTicket(null)}
+          />
         )}
       </Modal>
+
+      {/* QR Scanner / Admission Verifier Modal */}
+      <QRScannerModal
+        isOpen={scannerOpen}
+        onClose={() => setScannerOpen(false)}
+        sampleTickets={userBookings}
+      />
     </div>
   );
 }

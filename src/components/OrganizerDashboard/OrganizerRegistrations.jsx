@@ -12,6 +12,7 @@ import {
   Ticket
 } from 'lucide-react';
 import Modal from '../common/Modal';
+import TicketPass from '../common/TicketPass';
 
 export default function OrganizerRegistrations({
   registrations = [
@@ -285,51 +286,15 @@ export default function OrganizerRegistrations({
         isOpen={!!selectedPass}
         onClose={() => setSelectedPass(null)}
         title="Attendee Digital Pass"
+        maxWidth="500px"
       >
         {selectedPass && (
-          <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-                color: '#fff',
-                padding: '1.5rem',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: '0 8px 24px rgba(37, 99, 235, 0.25)',
-                marginBottom: '1.25rem'
-              }}
-            >
-              <h4 style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '4px' }}>
-                {selectedPass.eventTitle}
-              </h4>
-              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
-                Attendee: <strong>{selectedPass.studentName}</strong> ({selectedPass.studentId})
-              </p>
-
-              <div
-                style={{
-                  background: '#ffffff',
-                  padding: '1rem',
-                  borderRadius: 'var(--radius-md)',
-                  display: 'inline-block',
-                  margin: '1.25rem auto 0.75rem'
-                }}
-              >
-                <QrCode size={120} color="#0f172a" />
-              </div>
-
-              <div style={{ fontFamily: 'monospace', letterSpacing: '2px', fontSize: '0.9rem' }}>
-                {selectedPass.ticketCode}
-              </div>
-            </div>
-
-            <button
-              className="btn-primary"
-              style={{ width: '100%' }}
-              onClick={() => setSelectedPass(null)}
-            >
-              Close
-            </button>
-          </div>
+          <TicketPass
+            ticket={selectedPass}
+            attendeeName={selectedPass.studentName}
+            onClose={() => setSelectedPass(null)}
+            isOrganizer
+          />
         )}
       </Modal>
     </div>
