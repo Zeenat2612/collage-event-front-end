@@ -20,7 +20,9 @@ import QRScannerModal from '../common/QRScannerModal';
 export default function MyRegistrations({
   userBookings,
   setUserBookings,
-  onNavigateTab
+  onNavigateTab,
+  userName = 'Zeenat',
+  currentUser
 }) {
   const [filterStatus, setFilterStatus] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,7 +59,7 @@ export default function MyRegistrations({
         <div>
           <h2 className="welcome-title">My Registrations & Entry Passes</h2>
           <p className="welcome-subtitle">
-            Access your admission passes, check confirmation status, and manage ticket bookings.
+            Access your admission passes, check confirmation status, and manage ticket bookings for {userName}.
           </p>
         </div>
       </section>
@@ -229,20 +231,24 @@ export default function MyRegistrations({
                     <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                       {item.title}
                     </h4>
-                    <span className={`status-pill ${item.status.toLowerCase()}`}>
-                      {item.status}
+                    <span className={`status-pill ${item.status ? item.status.toLowerCase() : 'confirmed'}`}>
+                      {item.status || 'Confirmed'}
                     </span>
                   </div>
 
                   <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <Calendar size={14} color="var(--text-muted)" />
-                      <span>{item.date}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <MapPin size={14} color="var(--text-muted)" />
-                      <span>{item.venue}</span>
-                    </div>
+                    {item.date && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <Calendar size={14} color="var(--text-muted)" />
+                        <span>{item.date}{item.time ? ` • ${item.time}` : ''}</span>
+                      </div>
+                    )}
+                    {item.venue && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <MapPin size={14} color="var(--text-muted)" />
+                        <span>{item.venue}</span>
+                      </div>
+                    )}
                     {item.seat && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <span style={{ color: 'var(--text-muted)' }}>Entry:</span>
@@ -255,37 +261,39 @@ export default function MyRegistrations({
 
               {/* Right Column: Ticket Code & Action Buttons */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <div
-                  style={{
-                    background: 'var(--bg-surface-hover)',
-                    border: '1px solid var(--border-subtle)',
-                    padding: '0.4rem 0.75rem',
-                    borderRadius: 'var(--radius-sm)',
-                    fontFamily: 'monospace',
-                    fontSize: '0.85rem',
-                    letterSpacing: '1px',
-                    color: 'var(--text-primary)'
-                  }}
-                  title="Ticket Code"
-                >
-                  {item.ticketCode}
-                </div>
+                {item.ticketCode && (
+                  <div
+                    style={{
+                      background: 'var(--bg-surface-hover)',
+                      border: '1px solid var(--border-subtle)',
+                      padding: '0.4rem 0.75rem',
+                      borderRadius: 'var(--radius-sm)',
+                      fontFamily: 'monospace',
+                      fontSize: '0.85rem',
+                      letterSpacing: '1px',
+                      color: 'var(--text-primary)'
+                    }}
+                    title="Ticket Code"
+                  >
+                    {item.ticketCode}
+                  </div>
+                )}
 
                 <button
                   className="btn-primary"
                   style={{ padding: '0.5rem 0.85rem', fontSize: '0.825rem' }}
                   onClick={() => setSelectedTicket(item)}
                 >
-                  <QrCode size={15} /> View QR Pass
+                  <QrCode size={15} /> View Digital Ticket
                 </button>
 
                 <button
                   className="btn-outline"
                   style={{ padding: '0.5rem 0.85rem', fontSize: '0.825rem' }}
-                  onClick={() => alert(`Downloading admission pass PDF for ${item.title}`)}
-                  title="Download pass"
+                  onClick={() => setSelectedTicket(item)}
+                  title="View digital ticket pass & PDF download option"
                 >
-                  <Download size={15} />
+                  <Download size={15} /> Pass PDF
                 </button>
 
                 <button
@@ -322,7 +330,7 @@ export default function MyRegistrations({
         {selectedTicket && (
           <TicketPass
             ticket={selectedTicket}
-            attendeeName="Zeenat"
+            attendeeName={userName}
             onClose={() => setSelectedTicket(null)}
           />
         )}

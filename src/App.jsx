@@ -225,6 +225,8 @@ export default function App() {
                   userBookings={userBookings}
                   setUserBookings={setUserBookings}
                   onNavigateTab={setCurrentTab}
+                  userName={getGreetingName()}
+                  currentUser={currentUser}
                 />
               )}
               {currentTab === 'favorites' && (

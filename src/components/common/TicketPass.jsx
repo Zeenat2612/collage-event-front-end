@@ -32,33 +32,36 @@ export default function TicketPass({
 
   if (!ticket) return null;
 
-  // Normalized ticket properties
-  const ticketId = ticket.ticketCode || ticket.id || 'TCK-892401';
-  const eventId = ticket.eventId || (ticket.id && ticket.id.startsWith('evt-') ? ticket.id : 'EVT-101');
-  const eventName = ticket.title || ticket.eventTitle || 'Campus Flagship Event';
-  const date = ticket.date || '15 Jun 2025';
-  const venue = ticket.venue || 'Main Auditorium';
-  const attendee = ticket.attendee || ticket.studentName || attendeeName || 'Registered Student';
+  // Real data extraction without inventing fake defaults
+  const ticketId = ticket.ticketCode || ticket.id || null;
+  const eventId = ticket.eventId || (ticket.id && ticket.id.startsWith('evt-') ? ticket.id : null);
+  const eventName = ticket.title || ticket.eventTitle || 'Campus Event';
+  const date = ticket.date ? `${ticket.date}${ticket.time ? ` • ${ticket.time}` : ''}` : null;
+  const venue = ticket.venue || null;
+  const attendee = ticket.userName || ticket.attendee || ticket.studentName || attendeeName || null;
   const status = ticket.status || 'Confirmed';
-  const seat = ticket.seat || 'General Admission - Area A';
-  const studentId = ticket.studentId || (attendee === 'Zeenat' ? 'CS-2023-8942' : 'STU-2025-081');
+  const seat = ticket.seat || null;
+  const studentId = ticket.studentId || ticket.userEmail || null;
+  const college = ticket.college || 'Anjuman-I-Islam Kalsekar Technical Campus (AIKTC)';
 
-  // Payload strictly containing all required data fields for QR scanner
+  // QR Payload with authentic existing data fields
   const qrPayloadObject = {
-    ticketId,
-    eventId,
+    ...(ticketId && { ticketId }),
+    ...(eventId && { eventId }),
     eventName,
-    date,
-    venue,
-    attendee,
+    ...(date && { date }),
+    ...(venue && { venue }),
+    ...(attendee && { attendee }),
     status,
-    seat,
-    studentId,
-    system: 'CAMPUS-EVENT-HUB',
+    ...(seat && { seat }),
+    ...(studentId && { studentId }),
+    college,
+    system: 'AIKTC-EVENT-HUB',
     scannable: true
   };
 
   const qrPayloadString = JSON.stringify(qrPayloadObject);
+  const domQrId = `ticket-qr-svg-${ticketId || 'pass'}`;
 
   const handleCopyPayload = () => {
     navigator.clipboard.writeText(qrPayloadString);
@@ -82,49 +85,69 @@ export default function TicketPass({
       // Title & Branding
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
-      doc.text('CAMPUS EVENT PASS', 60, 15, { align: 'center' });
+      doc.setFontSize(11);
+      doc.text('AIKTC EVENT MANAGEMENT SYSTEM', 60, 13, { align: 'center' });
 
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
-      doc.text('OFFICIAL ADMISSION TICKET', 60, 22, { align: 'center' });
-      doc.text(`PASS ID: ${ticketId}`, 60, 28, { align: 'center' });
+      doc.text('OFFICIAL DIGITAL ADMISSION PASS', 60, 21, { align: 'center' });
+      if (ticketId) {
+        doc.text(`PASS ID: ${ticketId}`, 60, 28, { align: 'center' });
+      }
 
       // Event Info Section
       doc.setTextColor(15, 23, 42);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
-      doc.text(eventName, 60, 47, { align: 'center', maxWidth: 100 });
+      doc.setFontSize(12);
+      doc.text(eventName, 60, 45, { align: 'center', maxWidth: 100 });
 
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9);
+      doc.setFontSize(8.5);
       doc.setTextColor(71, 85, 105);
 
-      doc.text(`Attendee: ${attendee} (${studentId})`, 15, 60);
-      doc.text(`Date: ${date}`, 15, 68);
-      doc.text(`Venue: ${venue}`, 15, 76);
-      doc.text(`Seat / Access: ${seat}`, 15, 84);
-      doc.text(`Status: ${status.toUpperCase()}`, 15, 92);
-      doc.text(`Event ID: ${eventId}`, 15, 100);
+      let currentY = 58;
+      if (attendee) {
+        doc.text(`Attendee: ${attendee}${studentId ? ` (${studentId})` : ''}`, 15, currentY);
+        currentY += 7;
+      }
+      if (date) {
+        doc.text(`Date & Time: ${date}`, 15, currentY);
+        currentY += 7;
+      }
+      if (venue) {
+        doc.text(`Venue: ${venue}`, 15, currentY);
+        currentY += 7;
+      }
+      if (seat) {
+        doc.text(`Seat / Access: ${seat}`, 15, currentY);
+        currentY += 7;
+      }
+      doc.text(`Status: ${status.toUpperCase()}`, 15, currentY);
+      currentY += 7;
+      if (eventId) {
+        doc.text(`Event ID: ${eventId}`, 15, currentY);
+        currentY += 7;
+      }
 
       // Perforation line
+      const perfY = Math.max(105, currentY + 5);
       doc.setDrawColor(203, 213, 225);
       doc.setLineDashPattern([2, 2], 0);
-      doc.line(10, 108, 110, 108);
+      doc.line(10, perfY, 110, perfY);
 
       // QR Instruction
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
+      doc.setFontSize(9.5);
       doc.setTextColor(30, 41, 59);
-      doc.text('GATE ENTRY QR CODE', 60, 118, { align: 'center' });
+      doc.text('GATE ENTRY QR CODE', 60, perfY + 9, { align: 'center' });
 
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7.5);
       doc.setTextColor(100, 116, 139);
-      doc.text('Present this digital pass at the entrance for verification', 60, 124, { align: 'center' });
+      doc.text('Present this digital pass at the venue entrance', 60, perfY + 14, { align: 'center' });
 
       // Embed QR code as image onto PDF
-      const svgElement = document.getElementById(`ticket-qr-svg-${ticketId}`);
+      const svgElement = document.getElementById(domQrId);
       if (svgElement) {
         const svgString = new XMLSerializer().serializeToString(svgElement);
         const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
@@ -141,24 +164,26 @@ export default function TicketPass({
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(image, 0, 0, 300, 300);
           const imgData = canvas.toDataURL('image/png');
-          doc.addImage(imgData, 'PNG', 35, 130, 50, 50);
+          doc.addImage(imgData, 'PNG', 37, perfY + 18, 46, 46);
 
-          doc.setFont('courier', 'bold');
-          doc.setFontSize(10);
-          doc.setTextColor(15, 23, 42);
-          doc.text(ticketId, 60, 187, { align: 'center' });
+          if (ticketId) {
+            doc.setFont('courier', 'bold');
+            doc.setFontSize(9.5);
+            doc.setTextColor(15, 23, 42);
+            doc.text(ticketId, 60, perfY + 70, { align: 'center' });
+          }
 
           doc.setFont('helvetica', 'italic');
           doc.setFontSize(7);
           doc.setTextColor(148, 163, 184);
-          doc.text('Valid for one-time admission &bull; Non-transferable', 60, 193, { align: 'center' });
+          doc.text('Anjuman-I-Islam Kalsekar Technical Campus • Official Pass', 60, perfY + 76, { align: 'center' });
 
-          doc.save(`Admission_Pass_${ticketId}.pdf`);
+          doc.save(`AIKTC_Admission_Pass_${ticketId || 'Event'}.pdf`);
           setDownloading(false);
         };
         image.src = blobURL;
       } else {
-        doc.save(`Admission_Pass_${ticketId}.pdf`);
+        doc.save(`AIKTC_Admission_Pass_${ticketId || 'Event'}.pdf`);
         setDownloading(false);
       }
     } catch (err) {
@@ -173,13 +198,13 @@ export default function TicketPass({
   return (
     <div className="ticket-pass-wrapper">
       {/* Professional Admission Pass Card */}
-      <div className="ticket-pass-card" id={`ticket-card-${ticketId}`}>
+      <div className="ticket-pass-card" id={`ticket-card-${ticketId || 'pass'}`}>
         {/* Pass Header Banner */}
         <div className="ticket-pass-header">
           <div className="ticket-header-top">
             <div className="ticket-brand-badge">
               <Sparkles size={14} className="ticket-sparkle-icon" />
-              <span>OFFICIAL EVENT PASS</span>
+              <span>AIKTC DIGITAL PASS</span>
             </div>
             <div className={`ticket-status-chip ${isConfirmed ? 'confirmed' : 'pending'}`}>
               <span className="pulse-dot"></span>
@@ -190,47 +215,54 @@ export default function TicketPass({
           <h3 className="ticket-event-name">{eventName}</h3>
 
           <div className="ticket-header-meta">
-            <span className="ticket-id-tag">
-              <Ticket size={13} /> {ticketId}
-            </span>
-            <span className="ticket-event-id-tag">ID: {eventId}</span>
+            {ticketId && (
+              <span className="ticket-id-tag">
+                <Ticket size={13} /> {ticketId}
+              </span>
+            )}
+            {eventId && <span className="ticket-event-id-tag">ID: {eventId}</span>}
           </div>
         </div>
 
         {/* Pass Middle: Event Information Grid */}
         <div className="ticket-pass-body">
           <div className="ticket-details-grid">
-            <div className="ticket-detail-item">
-              <span className="detail-label">
-                <User size={13} /> ATTENDEE
-              </span>
-              <span className="detail-value attendee-highlight">{attendee}</span>
-              <span className="detail-subtext">ID: {studentId}</span>
-            </div>
+            {attendee && (
+              <div className="ticket-detail-item">
+                <span className="detail-label">
+                  <User size={13} /> ATTENDEE
+                </span>
+                <span className="detail-value attendee-highlight">{attendee}</span>
+                {studentId && <span className="detail-subtext">ID: {studentId}</span>}
+              </div>
+            )}
 
-            <div className="ticket-detail-item">
-              <span className="detail-label">
-                <Calendar size={13} /> DATE & TIME
-              </span>
-              <span className="detail-value">{date}</span>
-              <span className="detail-subtext">Gates open 30m prior</span>
-            </div>
+            {date && (
+              <div className="ticket-detail-item">
+                <span className="detail-label">
+                  <Calendar size={13} /> DATE & TIME
+                </span>
+                <span className="detail-value">{date}</span>
+              </div>
+            )}
 
-            <div className="ticket-detail-item">
-              <span className="detail-label">
-                <MapPin size={13} /> VENUE
-              </span>
-              <span className="detail-value">{venue}</span>
-              <span className="detail-subtext">Campus Main Facility</span>
-            </div>
+            {venue && (
+              <div className="ticket-detail-item">
+                <span className="detail-label">
+                  <MapPin size={13} /> VENUE
+                </span>
+                <span className="detail-value">{venue}</span>
+              </div>
+            )}
 
-            <div className="ticket-detail-item">
-              <span className="detail-label">
-                <ShieldCheck size={13} /> SEATING / TIER
-              </span>
-              <span className="detail-value">{seat}</span>
-              <span className="detail-subtext">Standard Access</span>
-            </div>
+            {seat && (
+              <div className="ticket-detail-item">
+                <span className="detail-label">
+                  <ShieldCheck size={13} /> SEATING / ACCESS
+                </span>
+                <span className="detail-value">{seat}</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -262,7 +294,7 @@ export default function TicketPass({
             <div className="qr-reticle reticle-br"></div>
 
             <QRCodeSVG
-              id={`ticket-qr-svg-${ticketId}`}
+              id={domQrId}
               value={qrPayloadString}
               size={168}
               level="H"
@@ -292,8 +324,8 @@ export default function TicketPass({
               <span className="bar-line b-w1"></span>
               <span className="bar-line b-w3"></span>
             </div>
-            <div className="ticket-code-display">{ticketId}</div>
-            <div className="ticket-auth-stamp">SECURE DIGITAL TOKEN &bull; NON-TRANSFERABLE</div>
+            {ticketId && <div className="ticket-code-display">{ticketId}</div>}
+            <div className="ticket-auth-stamp">AIKTC SECURE DIGITAL TOKEN &bull; NON-TRANSFERABLE</div>
           </div>
         </div>
       </div>
